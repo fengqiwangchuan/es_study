@@ -403,4 +403,41 @@ GET cars/_search
     }
   }
 }
+
+GET cars/_search
+{
+  "size": 0,
+  "aggs": {
+    "price": {
+      "range": {
+        "field": "price",
+        "ranges": [
+          {
+            "from": 10000,
+            "to": 100000
+          }
+        ]
+      },
+      "aggs": {
+        "maker": {
+          "terms": {
+            "field": "make"
+          },
+          "aggs": {
+            "avg_price": {
+              "avg": {
+                "field": "price"
+              }
+            }
+          }
+        },
+        "avg_price": {
+          "avg": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
 ```
